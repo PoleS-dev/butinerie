@@ -17,10 +17,43 @@ if [ ! -f "/var/www/html/index.php" ]; then
 fi
 
 # Copier wp-config.php depuis wp-source si absent
-if [ ! -f "/var/www/html/wp-config.php" ] && [ -f "/wp-source/wp-config.php" ]; then
+if [ ! -f "/var/www/html/wp-config.php" ]; then
     echo "📝 Configuration de WordPress..."
-    cp /wp-source/wp-config.php /var/www/html/wp-config.php
+    if [ -f "/wp-source/wp-config.php" ]; then
+        cp /wp-source/wp-config.php /var/www/html/wp-config.php
+    else
+        echo "⚠️  wp-config.php non trouvé dans wp-source, création d'un minimal..."
+        # Créer un wp-config.php minimal si wp-source est vide
+        cat > /var/www/html/wp-config.php << 'EOF'
+<?php
+define( 'DB_NAME',     getenv('DB_NAME') ?: 'wp_db' );
+define( 'DB_USER',     getenv('DB_USER') ?: 'wp_user' );
+define( 'DB_PASSWORD', getenv('DB_PASS') ?: 'wp_pass' );
+define( 'DB_HOST',     'db:3306' );
+define( 'WP_HOME',    getenv('WP_HOME') ?: 'http://localhost:8084' );
+define( 'WP_SITEURL', getenv('WP_SITEURL') ?: 'http://localhost:8084' );
+define( 'WP_DEBUG', false );
+$table_prefix = 'wp_';
+define('AUTH_KEY',         'your-key-here');
+define('SECURE_AUTH_KEY',  'your-key-here');
+define('LOGGED_IN_KEY',    'your-key-here');
+define('NONCE_KEY',        'your-key-here');
+define('AUTH_SALT',        'your-key-here');
+define('SECURE_AUTH_SALT', 'your-key-here');
+define('LOGGED_IN_SALT',   'your-key-here');
+define('NONCE_SALT',       'your-key-here');
+if ( ! defined( 'ABSPATH' ) ) define( 'ABSPATH', dirname(__FILE__) . '/' );
+require_once( ABSPATH . 'wp-settings.php' );
+EOF
+    fi
     chown www-data:www-data /var/www/html/wp-config.php
+fi
+
+# Copier .htaccess depuis wp-source si absent
+if [ ! -f "/var/www/html/.htaccess" ] && [ -f "/wp-source/.htaccess" ]; then
+    echo "🔧 Configuration .htaccess..."
+    cp /wp-source/.htaccess /var/www/html/.htaccess
+    chown www-data:www-data /var/www/html/.htaccess
 fi
 
 # Vérifier si la base de données est vide et importer le backup
@@ -90,28 +123,40 @@ ADMIN_USER=${ADMIN_USER:-"admin"}
 ADMIN_EMAIL=${ADMIN_EMAIL:-"admin@localhost.local"}
 ADMIN_PASS=${ADMIN_PASS:-"admin123"}
 
-# Attendre que WP-CLI soit accessible
-sleep 5
+# Attendre que WordPress soit complètement chargé
+sleep 10
 
-# Vérifier si l'utilisateur admin existe
-if ! wp user get $ADMIN_USER --path=/var/www/html >/dev/null 2>&1; then
-    echo "➕ Création de l'utilisateur admin..."
-    wp user create $ADMIN_USER $ADMIN_EMAIL \
-        --role=administrator \
-        --user_pass=$ADMIN_PASS \
-        --display_name="Administrateur Local" \
-        --path=/var/www/html
+# Créer l'admin directement via PHP
+echo "➕ Création de l'utilisateur admin..."
+php -r "
+define('WP_USE_THEMES', false);
+require_once('/var/www/html/wp-load.php');
 
-    if [ $? -eq 0 ]; then
-        echo "✅ Utilisateur admin créé:"
-        echo "   👤 Username: $ADMIN_USER"
-        echo "   📧 Email: $ADMIN_EMAIL"
-        echo "   🔑 Password: $ADMIN_PASS"
-        echo "   🌐 Login: http://localhost:8084/wp-admin"
-    fi
-else
-    echo "ℹ️  Utilisateur admin '$ADMIN_USER' existe déjà"
-fi
+\$admin_user = get_user_by('login', '$ADMIN_USER');
+if (!\$admin_user) {
+    \$user_data = array(
+        'user_login' => '$ADMIN_USER',
+        'user_pass' => '$ADMIN_PASS',
+        'user_email' => '$ADMIN_EMAIL',
+        'display_name' => 'Administrateur Local',
+        'role' => 'administrator'
+    );
+
+    \$user_id = wp_insert_user(\$user_data);
+
+    if (is_wp_error(\$user_id)) {
+        echo 'Erreur création admin: ' . \$user_id->get_error_message();
+    } else {
+        echo '✅ Utilisateur admin créé avec succès!';
+        echo '   👤 Username: $ADMIN_USER';
+        echo '   📧 Email: $ADMIN_EMAIL';
+        echo '   🔑 Password: $ADMIN_PASS';
+        echo '   🌐 Login: http://localhost:8084/wp-admin';
+    }
+} else {
+    echo 'ℹ️  Utilisateur admin existe déjà';
+}
+"
 
 echo "✅ Initialisation terminée !"
 

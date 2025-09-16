@@ -35,12 +35,14 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost.local}
       ADMIN_PASS: ${ADMIN_PASS:-admin123}
     volumes:
-      # Source WordPress pour copie
-      - ./wp:/wp-source
+      # Source WordPress pour copie (fix du mount)
+      - ./wp:/wp-source:ro
       # Backup SQL (monter le dossier sql entier)
-      - ./sql:/sql
+      - ./sql:/sql:ro
       # Volumes persistants pour WordPress
       - wp_data:/var/www/html
+      # Mount direct du wp-content pour synchronisation live (optionnel)
+      # - ./wp/wp-content:/var/www/html/wp-content
 
   phpmyadmin:
     image: phpmyadmin:latest

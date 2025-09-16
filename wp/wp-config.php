@@ -44,10 +44,10 @@ define( 'WP_HOME',    getenv('WP_HOME') ?: 'http://localhost:8084' );
 define( 'WP_SITEURL', getenv('WP_SITEURL') ?: 'http://localhost:8084' );
 
 /** === Dev options (facultatif) === */
-define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_LOG', true );
-define( 'WP_DEBUG_DISPLAY', true );
-@ini_set( 'display_errors', 1 );
+define( 'WP_DEBUG', false );
+define( 'WP_DEBUG_LOG', false );
+define( 'WP_DEBUG_DISPLAY', false );
+@ini_set( 'display_errors', 0 );
 
 
 

@@ -1,0 +1,123 @@
+/*
+Theme Name: Enfold Child
+Description: A <a href='http://codex.wordpress.org/Child_Themes'>Child Theme</a> for the Enfold Wordpress Theme. If you plan to do a lot of file modifications we recommend to use this Theme instead of the original Theme. Updating wil be much easier then.
+Version: 1.0
+Author: Kriesi
+Author URI: http://www.kriesi.at
+Template: enfold
+*/
+
+p {
+    margin: 0em 0!important;
+}
+.bordure-filet-4bb4e7{
+    border-image: url(https://butinerie.com/images/bordure-filet-4bb4e7.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+.bordure-filet-8bc9a7{
+    border-image: url(https://butinerie.com/images/bordure-filet-8bc9a7.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+.bordure-filet-64b32b{
+    border-image: url(https://butinerie.com/images/bordure-filet-64b32b.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+.bordure-filet-b196c7{
+    border-image: url(https://butinerie.com/images/bordure-filet-b196c7.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+.bordure-filet-e8e000{
+    border-image: url(https://butinerie.com/images/bordure-filet-e8e000.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+.bordure-filet-noir{
+    border-image: url(https://butinerie.com/images/bordure-filet-noir.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 0px!important;
+    border-width: 0px!important;
+}
+
+.bordure-ext-noir{
+    border-image: url(https://butinerie.com/images/bordure-ext-noir.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 5px!important;
+    border-width: 5px!important;
+}
+
+.bordure-int-blanc{
+    border-image: url(https://butinerie.com/images/bordure-int-blanc.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 5px!important;
+    border-width: 5px!important;
+}
+
+
+.bordurecouleurblanc{
+    border-image:url(https://butinerie.com/images/bordure-blanc.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 30px!important;
+    border-width: 30px!important;
+}
+.bordurecouleurnoir{
+    border-image:url(https://butinerie.com/images/bordure-noir.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+
+.bordurecouleur1{
+    border-image: url(https://butinerie.com/images/bordure1c.svg)!important;
+    border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+.bordurecouleur2{
+    border-image:url(https://butinerie.com/images/bordure2.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+
+.bordurecouleur3{
+    border-image:url(https://butinerie.com/images/bordure3.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+.bordurecouleur4{
+    border-image:url(https://butinerie.com/images/bordure4.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+
+.formecouleur1{
+    border-image: url(https://butinerie.com/images/forme2.svg)!important;
+	border-image-slice: 0 fill!important;
+    border-image-outset: 20px!important;
+    border-width: 20px!important;
+}
+
+div .av_one_fourth {
+    margin-left: 3%;
+    width: 22%;
+}
+#top .av-flex-placeholder {
+    
+    width: 4%;
+}
+
+
+
+
+

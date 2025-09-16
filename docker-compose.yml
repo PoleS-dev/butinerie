@@ -1,0 +1,76 @@
+
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: wp_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  wordpress:
+    build: .
+    container_name: wp_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8084:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      # Utilisateur admin automatique
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost.local}
+      ADMIN_PASS: ${ADMIN_PASS:-admin123}
+    volumes:
+      # Source WordPress pour copie
+      - ./wp:/wp-source
+      # Backup SQL (monter le dossier sql entier)
+      - ./sql:/sql
+      # Volumes persistants pour WordPress
+      - wp_data:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: wp_pma
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+    ports:
+      - "8086:80"
+
+  wpcli:
+    image: wordpress:cli
+    container_name: wp_cli
+    depends_on:
+      - db
+      - wordpress
+    user: "33:33" # www-data
+    working_dir: /var/www/html
+    volumes:
+      - wp_data:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+    entrypoint: ["wp"]
+
+volumes:
+  db_data:
+  wp_data:

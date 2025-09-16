@@ -1,0 +1,41 @@
+# --- Ignore tout par défaut dans wp-content/themes
+wp/wp-content/themes/*
+
+# --- Garde seulement ces deux thèmes
+!wp/wp-content/themes/enfold/
+!wp/wp-content/themes/enfold-child/
+
+# --- Mais ignore les fichiers temporaires ou copies dedans
+wp/wp-content/themes/*copie*/
+wp/wp-content/themes/*\ 4/
+wp/wp-content/themes/*\ 3/
+wp/wp-content/themes/*\ 2/
+wp/wp-content/upgrade
+# --- Ignore uploads et cache (trop lourd, pas utile)
+wp/wp-content/uploads/
+wp/wp-content/cache/
+wp/wp-content/languages/
+
+# --- Ignore plugins téléchargés (on garde seulement plugins maison si besoin)
+wp/wp-content/plugins/*
+
+
+# --- Ignore la DB et les dumps SQL
+sql/
+*.sql
+*.sql.gz
+
+# --- Logs, backups
+*.log
+*.bak
+*.tmp
+
+# --- Node, composer, vendor
+node_modules/
+vendor/
+
+# --- OS files
+.DS_Store
+Thumbs.db
+.claude/
+PARTAGE-COLLEGUES.md
